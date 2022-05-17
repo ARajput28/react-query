@@ -273,26 +273,19 @@
 //   );
 // };
 
-// Video - 12
+// Video - 13
 
-import { useQuery } from "react-query";
-import axios from "axios";
-
-const fetchSuperHeroes = () => {
-  return axios.get("http://localhost:4000/superheroes");
-};
+import { useSuperHeroesData } from "../hooks/useSuperHeroesData";
 
 const RQSuperHeroesPage = () => {
-  const { isLoading, data, isError, error, isFetching, refetch } = useQuery(
-    "super-heroes",
-    fetchSuperHeroes,
-    {
-      select: (data) => {
-        const superHeroesNames = data.data.map((hero) => hero.name);
-        return superHeroesNames;
-      },
-    }
-  );
+  const onSuccess = (data) => {
+    console.log("Data fetched successfully...", data);
+  };
+  const onError = (error) => {
+    console.log("Something went wrong...", error);
+  };
+  const { isLoading, data, isError, error, isFetching, refetch } =
+    useSuperHeroesData(onSuccess, onError);
 
   if (isLoading || isFetching) {
     return <h2>Loading...</h2>;
@@ -309,12 +302,52 @@ const RQSuperHeroesPage = () => {
       {data.map((heroName) => {
         return <div key={heroName}>{heroName}</div>;
       })}
-      {/* {data?.data.map((hero) => {
-        return <div key={hero.name}>{hero.name}</div>;
-      })} */}
     </>
   );
 };
+
+// Video - 12
+
+// import { useQuery } from "react-query";
+// import axios from "axios";
+
+// const fetchSuperHeroes = () => {
+//   return axios.get("http://localhost:4000/superheroes");
+// };
+
+// const RQSuperHeroesPage = () => {
+//   const { isLoading, data, isError, error, isFetching, refetch } = useQuery(
+//     "super-heroes",
+//     fetchSuperHeroes,
+//     {
+//       select: (data) => {
+//         const superHeroesNames = data.data.map((hero) => hero.name);
+//         return superHeroesNames;
+//       },
+//     }
+//   );
+
+//   if (isLoading || isFetching) {
+//     return <h2>Loading...</h2>;
+//   }
+
+//   if (isError) {
+//     return <h2>{error.message}</h2>;
+//   }
+
+//   return (
+//     <>
+//       <h2>RQ Super Heroes Page</h2>
+//       <button onClick={refetch}>Fetch heroes</button>
+//       {data.map((heroName) => {
+//         return <div key={heroName}>{heroName}</div>;
+//       })}
+//       {/* {data?.data.map((hero) => {
+//         return <div key={hero.name}>{hero.name}</div>;
+//       })} */}
+//     </>
+//   );
+// };
 
 // Video - 11
 
